@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.newhogwarts.school.model.Student;
 import ru.newhogwarts.school.service.StudentService;
+
 import java.util.Collection;
 import java.util.Collections;
 
@@ -12,7 +13,7 @@ import java.util.Collections;
 @RestController
 @RequestMapping("students")
 public class StudentController {
-    StudentService studentService;
+    private StudentService studentService;
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
@@ -27,12 +28,30 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
+    @GetMapping("/findBetweenAge")
+    public ResponseEntity<Collection<Student>> findStudentsBetweenAge(
+            @RequestParam(required = false) int minAge,
+            @RequestParam(required = false) int maxAge) {
+        if (minAge > 0 && maxAge > 0) {
+            return ResponseEntity.ok(studentService.findByAge(minAge, maxAge));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/findFromFaculty/{id}")
+    public ResponseEntity <Collection<Student>> findFaculty(@PathVariable (required = false) int id) {
+        if (id > 0) {
+            return ResponseEntity.ok(studentService.findStudentFromFaculty(id));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
     @GetMapping
     public ResponseEntity<Collection<Student>> getAllStudents() {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("/find")
+    @GetMapping("/findByAge")
     public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
         if (age > 0) {
             return ResponseEntity.ok(studentService.findStudents(age));

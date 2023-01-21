@@ -1,11 +1,13 @@
 package ru.newhogwarts.school.controller;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.newhogwarts.school.model.Faculty;
+import ru.newhogwarts.school.model.Student;
 import ru.newhogwarts.school.service.FacultyService;
+
 import java.util.Collection;
-import java.util.Collections;
 
 
 @RestController
@@ -32,11 +34,21 @@ public class FacultyController {
     }
 
     @GetMapping("/find")
-    public ResponseEntity<Collection<Faculty>> findStudents(@RequestParam(required = false) String color) {
-        if (color != null && !color.isBlank()) {
-            return ResponseEntity.ok(facultyService.findByColor(color));
+    public ResponseEntity<Faculty> findByNameOrColor(@RequestParam(required = false) String name,
+                                                     @RequestParam(required = false) String color) {
+        if (name != null && !name.isBlank() ||
+                color != null && !color.isBlank()) {
+            return ResponseEntity.ok(facultyService.findByNameOrColor(name, color));
         }
-        return ResponseEntity.ok(Collections.emptyList());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/findFacultyId/{id}")
+    public ResponseEntity<Faculty> findStudentsByFaculty(@PathVariable int id) {
+        if (id > 0) {
+            return ResponseEntity.ok(facultyService.findFacultyByStudentsId(id));
+        }
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @PostMapping

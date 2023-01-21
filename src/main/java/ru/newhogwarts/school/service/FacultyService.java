@@ -39,5 +39,14 @@ public class FacultyService {
     public Collection<Faculty> findByColor(String color) {
         return facultyRepository.findAll().stream().filter(e -> e.getColor().equals(color)).toList();
     }
+
+    public Faculty findByNameOrColor(String name, String color) {
+        return facultyRepository.findFacultyByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    }
+
+    public Faculty findFacultyByStudentsId(int id){
+        return facultyRepository.findFacultyByStudentsId(id);
+    }
+
 }
 
