@@ -6,7 +6,7 @@ import javax.persistence.*;
 public class Student {
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
 
     private String name;
     private int age;
@@ -15,11 +15,11 @@ public class Student {
     @JoinColumn(name = "faculty_id")
     private Faculty faculty;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -46,9 +46,10 @@ public class Student {
 
         Student student = (Student) o;
 
-        if (getId() != student.getId()) return false;
         if (getAge() != student.getAge()) return false;
-        return getName() != null ? getName().equals(student.getName()) : student.getName() == null;
+        if (getId() != null ? !getId().equals(student.getId()) : student.getId() != null) return false;
+        if (getName() != null ? !getName().equals(student.getName()) : student.getName() != null) return false;
+        return faculty != null ? faculty.equals(student.faculty) : student.faculty == null;
     }
 
     @Override

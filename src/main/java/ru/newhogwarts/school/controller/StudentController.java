@@ -3,6 +3,7 @@ package ru.newhogwarts.school.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import ru.newhogwarts.school.model.Student;
 import ru.newhogwarts.school.service.StudentService;
 
@@ -28,7 +29,7 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping("/findBetweenAge")
+    @GetMapping(params = {"minAge","maxAge"})
     public ResponseEntity<Collection<Student>> findStudentsBetweenAge(
             @RequestParam(required = false) int minAge,
             @RequestParam(required = false) int maxAge) {
@@ -51,8 +52,8 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getAllStudents());
     }
 
-    @GetMapping("/findByAge")
-    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) int age) {
+    @GetMapping(params = {"age"})
+    public ResponseEntity<Collection<Student>> findStudents(@RequestParam(required = false) Integer age) {
         if (age > 0) {
             return ResponseEntity.ok(studentService.findStudents(age));
         }
@@ -61,17 +62,16 @@ public class StudentController {
 
 
     @PostMapping
-    public Student addStudent(@RequestBody Student student) {
-        return studentService.addStudent(student);
+    public ResponseEntity <Student> addStudent(@RequestBody Student student) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(studentService.addStudent(student));
     }
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        Student foundStudent = studentService.editStudent(student);
-        if (foundStudent == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        if (student.getId()==null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Id must be specified!");
         }
-        return ResponseEntity.ok(foundStudent);
+        return ResponseEntity.ok(studentService.editStudent(student));
     }
 
     @DeleteMapping("{id}")

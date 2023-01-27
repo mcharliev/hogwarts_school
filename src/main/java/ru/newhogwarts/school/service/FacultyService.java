@@ -36,17 +36,16 @@ public class FacultyService {
         facultyRepository.deleteById(id);
     }
 
-    public Collection<Faculty> findByColor(String color) {
-        return facultyRepository.findAll().stream().filter(e -> e.getColor().equals(color)).toList();
+    public Set<Faculty> findByColor(String color) {
+        return facultyRepository.findFacultyByColor(color);
     }
 
-    public Faculty findByNameOrColor(String name, String color) {
-        return facultyRepository.findFacultyByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    public Set<Faculty> findByColorOrNameIgnoreCase(String color, String name) {
+        return facultyRepository.findByColorOrNameIgnoreCase(color, name);
     }
 
-    public Faculty findFacultyByStudentsId(int id){
+    public Faculty findFacultyByStudentsId(int id) {
         return facultyRepository.findFacultyByStudentsId(id);
     }
-
 }
 
