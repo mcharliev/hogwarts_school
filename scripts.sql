@@ -13,3 +13,5 @@ select * from student where name like '%е%';
 select * from student where age < student.id;
 
 select * from student ORDER BY age;
+
+SELECT * FROM Student ORDER BY id DESC LIMIT 5

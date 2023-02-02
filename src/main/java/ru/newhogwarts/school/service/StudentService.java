@@ -48,4 +48,15 @@ public class StudentService {
     public Collection<Student> findStudentFromFaculty(int id) {
         return studentRepository.findByFaculty_Id(id);
     }
+
+    public Integer getCountOfStudents() {
+        return studentRepository.getCountOfStudents();
+    }
+
+    public Integer getAvgAgeOfStudents() {
+        return studentRepository.getAvgAgeOfStudents();
+    }
+    public List<Student> getLastFiveStudents() {
+        return studentRepository.getLastFiveStudents();
+    }
 }

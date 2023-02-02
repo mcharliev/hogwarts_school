@@ -9,6 +9,7 @@ import ru.newhogwarts.school.service.StudentService;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 
 @RestController
@@ -29,7 +30,7 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping(params = {"minAge","maxAge"})
+    @GetMapping(params = {"minAge", "maxAge"})
     public ResponseEntity<Collection<Student>> findStudentsBetweenAge(
             @RequestParam(required = false) int minAge,
             @RequestParam(required = false) int maxAge) {
@@ -40,7 +41,7 @@ public class StudentController {
     }
 
     @GetMapping("/findFromFaculty/{id}")
-    public ResponseEntity <Collection<Student>> findFaculty(@PathVariable (required = false) int id) {
+    public ResponseEntity<Collection<Student>> findFaculty(@PathVariable(required = false) int id) {
         if (id > 0) {
             return ResponseEntity.ok(studentService.findStudentFromFaculty(id));
         }
@@ -62,14 +63,14 @@ public class StudentController {
 
 
     @PostMapping
-    public ResponseEntity <Student> addStudent(@RequestBody Student student) {
+    public ResponseEntity<Student> addStudent(@RequestBody Student student) {
         return ResponseEntity.status(HttpStatus.CREATED).body(studentService.addStudent(student));
     }
 
     @PutMapping
     public ResponseEntity<Student> editStudent(@RequestBody Student student) {
-        if (student.getId()==null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Id must be specified!");
+        if (student.getId() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Id must be specified!");
         }
         return ResponseEntity.ok(studentService.editStudent(student));
     }
@@ -78,6 +79,21 @@ public class StudentController {
     public ResponseEntity deleteStudent(@PathVariable int id) {
         studentService.deleteStudent(id);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/countOfStudents")
+    public Integer getCountOfStudents() {
+        return studentService.getCountOfStudents();
+    }
+
+    @GetMapping("/avgAgeOfStudents")
+    public Integer getAvgAgeOfStudents() {
+        return studentService.getAvgAgeOfStudents();
+    }
+
+    @GetMapping("/lastFiveStudents")
+    List<Student> getLastFiveStudents() {
+        return studentService.getLastFiveStudents();
     }
 }
 
