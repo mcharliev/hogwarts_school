@@ -95,5 +95,10 @@ public class StudentController {
     List<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
+
+    @GetMapping("/getStudentsWhoseNamesStartWithLetterA")
+    List<String> getStudentsWhoseNamesStartWithLetterA() {
+        return studentService.getStudentsWhoseNamesStartWithLetterA();
+    }
 }
 

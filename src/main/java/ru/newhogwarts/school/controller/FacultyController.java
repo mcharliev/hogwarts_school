@@ -36,11 +36,11 @@ public class FacultyController {
 
     @GetMapping("/find")
     public Set<Faculty> findByColorOrNameIgnoreCase(@RequestParam(required = false) String color,
-                                          @RequestParam(required = false) String name) {
+                                                    @RequestParam(required = false) String name) {
         if (name == null) {
             return facultyService.findByColor(color);
         }
-        return facultyService.findByColorOrNameIgnoreCase(color,name);
+        return facultyService.findByColorOrNameIgnoreCase(color, name);
     }
 
     @GetMapping("/findFacultyId/{id}")
@@ -49,6 +49,11 @@ public class FacultyController {
             return ResponseEntity.ok(facultyService.findFacultyByStudentsId(id));
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
+    @GetMapping("/getLongestNameOfFaculty")
+    public String getLongestNameOfFaculty() {
+        return facultyService.getLongestNameOfFaculty();
     }
 
     @PostMapping

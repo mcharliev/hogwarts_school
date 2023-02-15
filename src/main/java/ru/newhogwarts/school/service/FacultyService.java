@@ -58,5 +58,13 @@ public class FacultyService {
         logger.debug("findFacultyByStudentsId method was called");
         return facultyRepository.findFacultyByStudentsId(id);
     }
+
+    public String getLongestNameOfFaculty() {
+        logger.debug("getLongestNameOfFaculty method was called");
+        return facultyRepository.findAll()
+                .stream()
+                .max(Comparator.comparing(value -> value.getName().length()))
+                .get().getName();
+    }
 }
 

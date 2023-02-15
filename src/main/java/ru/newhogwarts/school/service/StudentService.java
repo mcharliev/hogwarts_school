@@ -9,6 +9,8 @@ import ru.newhogwarts.school.repository.StudentRepository;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class StudentService {
@@ -74,4 +76,18 @@ public class StudentService {
         logger.debug("getLastFiveStudents method was called");
         return studentRepository.getLastFiveStudents();
     }
+
+    public List<String> getStudentsWhoseNamesStartWithLetterA() {
+        logger.debug("getStudentsWhoseNamesStartWithLetterA method was called");
+        return studentRepository.findAll()
+                .stream()
+                .filter(student -> student
+                        .getName()
+                        .startsWith("А"))
+                .sorted(Comparator.comparing(Student::getName))
+                .map(student -> student.getName().toUpperCase())
+                .collect(Collectors.toList());
+    }
+
+
 }
