@@ -3,19 +3,16 @@ package ru.newhogwarts.school.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import ru.newhogwarts.school.model.Faculty;
 import ru.newhogwarts.school.model.Student;
 import ru.newhogwarts.school.repository.StudentRepository;
 
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class StudentService {
-
-    Logger logger = LoggerFactory.getLogger(StudentService.class);
+    private Logger logger = LoggerFactory.getLogger(StudentService.class);
 
     private StudentRepository studentRepository;
 
@@ -93,5 +90,69 @@ public class StudentService {
                 .collect(Collectors.toList());
     }
 
+    public void printAllStudentsNames() {
+        List<String> studentsNames = studentRepository.findAll()
+                .stream()
+                .map(Student::getName).toList();
+        for (int i = 0; i < 2; i++) {
+            System.out.println(studentsNames.get(i));
+        }
+        new Thread(() ->
+        {
+            for (int i = 2; i < 4; i++) {
+                System.out.println(studentsNames.get(i));
+            }
+        }
+        ).start();
+        new Thread(() ->
+        {
+            for (int i = 4; i < 6; i++) {
+                System.out.println(studentsNames.get(i));
+            }
+        }
+        ).start();
+        new Thread(() ->
+        {
+            for (int i = 6; i < 8; i++) {
+                System.out.println(studentsNames.get(i));
+            }
+        }
+        ).start();
+    }
 
+    public void printAllStudentsNamesInSynchronizedStream() throws InterruptedException {
+        print(0);
+        print(1);
+        Thread thread_1 = new Thread(() ->
+        {
+            print(2);
+            print(3);
+        }
+        );
+        thread_1.start();
+        thread_1.join();
+        Thread thread_2 =   new Thread(() ->
+        {
+            print(4);
+            print(5);
+        }
+        );
+        thread_2.start();
+        thread_2.join();
+        Thread thread_3 = new Thread(() ->
+        {
+            print(6);
+            print(7);
+        }
+        );
+        thread_3.start();
+        thread_3.join();
+    }
+
+    private void print(int index) {
+        List<String> studentsNames = studentRepository.findAll()
+                .stream()
+                .map(Student::getName).toList();
+        System.out.println(studentsNames.get(index));
+    }
 }

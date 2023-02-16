@@ -91,13 +91,23 @@ public class StudentController {
     }
 
     @GetMapping("/lastFiveStudents")
-    List<Student> getLastFiveStudents() {
+    public List<Student> getLastFiveStudents() {
         return studentService.getLastFiveStudents();
     }
 
     @GetMapping("/getStudentsWhoseNamesStartWithLetterA")
-    List<String> getStudentsWhoseNamesStartWithLetterA() {
+    public List<String> getStudentsWhoseNamesStartWithLetterA() {
         return studentService.getStudentsWhoseNamesStartWithLetterA();
+    }
+
+    @GetMapping("/printAllStudentsNames")
+    public void printAllStudentsNames() {
+        studentService.printAllStudentsNames();
+    }
+
+    @GetMapping("/printAllStudentsNamesInSynchronizedStream")
+    public void printAllStudentsNamesInSynchronizedStream() throws InterruptedException {
+        studentService.printAllStudentsNamesInSynchronizedStream();
     }
 }
 
