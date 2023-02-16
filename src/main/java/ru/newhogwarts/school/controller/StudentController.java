@@ -61,7 +61,6 @@ public class StudentController {
         return ResponseEntity.ok(Collections.emptyList());
     }
 
-
     @PostMapping
     public ResponseEntity<Student> addStudent(@RequestBody Student student) {
         return ResponseEntity.status(HttpStatus.CREATED).body(studentService.addStudent(student));
@@ -87,7 +86,7 @@ public class StudentController {
     }
 
     @GetMapping("/avgAgeOfStudents")
-    public Integer getAvgAgeOfStudents() {
+    public Double getAvgAgeOfStudents() {
         return studentService.getAvgAgeOfStudents();
     }
 

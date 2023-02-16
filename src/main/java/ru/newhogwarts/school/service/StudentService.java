@@ -67,9 +67,13 @@ public class StudentService {
         return studentRepository.getCountOfStudents();
     }
 
-    public Integer getAvgAgeOfStudents() {
+    public Double getAvgAgeOfStudents() {
         logger.debug("getAvgAgeOfStudents method was called");
-        return studentRepository.getAvgAgeOfStudents();
+        return studentRepository.findAll()
+                .stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .getAsDouble();
     }
 
     public List<Student> getLastFiveStudents() {
